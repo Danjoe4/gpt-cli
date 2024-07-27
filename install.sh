@@ -10,7 +10,8 @@ if ! command -v jq > /dev/null 2>&1; then
     install_jq
 fi
 
-read -p "Enter your OpenAI API key: " OPENAI_API_KEY
+echo -n "Enter your OpenAI API key: "
+read OPENAI_API_KEY
 
 # make sure the key is valid
 rc=$(curl -s -o /dev/null -w "%{http_code}" https://api.openai.com/v1/chat/completions \
