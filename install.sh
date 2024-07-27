@@ -1,7 +1,5 @@
 #!/bin/sh
 
-version="1.7.1"
-
 install_jq() {
     echo "Please follow install instructions here https://jqlang.github.io/jq/"
     exit 0
@@ -22,10 +20,17 @@ rc=$(curl -s -o /dev/null -w "%{http_code}" https://api.openai.com/v1/chat/compl
      "model": "gpt-4o-mini",
      "messages": [{"role": "user", "content": "test"}]
  }')
-[ $rc -ne 200 ] && echo "invalid key" && return 1
+[ $rc -ne 200 ] && echo "invalid key" && exit 1
 
-# retrieve the script and write to it
-
-sed -i "s/^openai_api_key=.*/openai_api_key=\"$openai_api_key\"/" "$FILE"
-
-
+# retrieve the script and write to it and move it somewhere in $PATH
+URL="https://raw.githubusercontent.com/Danjoe4/gpt-cli/master/gpt"
+FILE="gpt"
+curl -s -o "$FILE" "$URL"
+if [ ! -f "$FILE" ]; then
+  echo "Failed to download the file."
+  exit 1
+fi
+sed -i "s/^openai_api_key=.*/openai_api_key=\"$OPENAI_API_KEY\"/" "$FILE"
+mv $FILE /usr/bin/
+chmod a+x /usr/bin/$FILE
+echo 'All done, use "gpt {prompt}" to use'
