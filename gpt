@@ -1,0 +1,55 @@
+#!/bin/sh
+
+openai_api_key=""
+system_prompt="You are a helpful assistant."
+model="gpt-4o"
+
+query="$@"
+
+# skip if the query is empty or only whitespace
+if [ -z $(echo "$query" | tr -d '[:space:]') ]; then 
+  echo "empty query"
+  exit 0
+fi
+
+
+# check/set various config options
+if [ -z "$openai_api_key" ]; then
+  echo "Error: OPENAI_API_KEY is not set."
+  exit 1
+fi
+
+opts="-s"
+# [ $debug -eq 1 ] && echo "start curl" && opts="-v"
+curl ${opts} https://api.openai.com/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer ${openai_api_key}" \
+  -d @- <<EOF | while read -r line; do
+  {
+    "model": "${model}",
+    "messages": [
+      {
+        "role": "system",
+        "content": "${system_prompt}"
+      },
+      {
+        "role": "user",
+        "content": "${query}"
+       }
+  ],
+  "stream": true
+}
+EOF
+  # check that the response is well formed
+  id="$(echo "$line" | cut -c1-5)"
+  if [ "$id" = "data:" ]; then
+    data=$(echo "${line#data: }")
+    if [ "$data" = "[DONE]" ]; then
+      printf "\n"
+      break
+    fi
+    content=$(echo "$data" | jq -r '.choices[0].delta.content // empty')
+    printf "%s" "$content"
+  fi
+  
+done
