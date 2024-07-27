@@ -30,7 +30,7 @@ if [ ! -f "$FILE" ]; then
   echo "Failed to download the file."
   exit 1
 fi
-sed -i "s/^openai_api_key=.*/openai_api_key=\"$OPENAI_API_KEY\"/" "$FILE"
+sed -i "s/^OPENAI_API_KEY=.*/OPENAI_API_KEY=\"${OPENAI_API_KEY}\"/" "$FILE"
 mv $FILE /usr/bin/
 chmod a+x /usr/bin/$FILE
 echo 'All done, use "gpt {prompt}" to use'
