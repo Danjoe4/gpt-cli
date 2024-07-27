@@ -1,7 +1,7 @@
 # Install
 
 ```
-sudo bash -c "$(curl -s -L https://raw.githubusercontent.com/Danjoe4/gpt-cli/master/install.sh)"
+sudo sh -c "$(curl -s -L https://raw.githubusercontent.com/Danjoe4/gpt-cli/master/install.sh)"
 ```
 
 # Motivation
