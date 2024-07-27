@@ -1,7 +1,7 @@
 #!/bin/sh
 
 OPENAI_API_KEY=""
-system_prompt="You are a helpful assistant."
+system_prompt="You are a helpful assistant accessed via a terminal. It is extremely important that you do not use any formatting in your responses. Respond concisely, in plain text."
 model="gpt-4o"
 
 query="$@"
