@@ -32,6 +32,6 @@ if [ ! -f "$FILE" ]; then
   exit 1
 fi
 sed -i "s/^OPENAI_API_KEY=.*/OPENAI_API_KEY=\"${OPENAI_API_KEY}\"/" "$FILE"
-mv $FILE /usr/bin/
+mv -f $FILE /usr/bin/gpt
 chmod a+x /usr/bin/$FILE
 echo 'All done, use "gpt {prompt}" to use'

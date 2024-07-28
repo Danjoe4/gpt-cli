@@ -41,15 +41,14 @@ curl ${opts} https://api.openai.com/v1/chat/completions \
 }
 EOF
   # check that the response is well formed
-  id="$(echo "$line" | cut -c1-5)"
+  id="$(printf "%s" "$line" | cut -c1-5)"
   if [ "$id" = "data:" ]; then
-    data=$(echo "${line#data: }")
+    data="${line#data: }"
     if [ "$data" = "[DONE]" ]; then
       printf "\n"
       break
     fi
-    content=$(echo "$data" | jq -r '.choices[0].delta.content // empty')
-    printf "%s" "$content"
+    printf "%s" "$data" | jq -j '.choices[0].delta.content //empty'
   fi
   
 done
