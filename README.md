@@ -1,7 +1,12 @@
 # Install
-
+### automatic; requires sudo. Places the file in /usr/bin/
 ```
 sudo sh -c "$(curl -s -L https://raw.githubusercontent.com/Danjoe4/gpt-cli/master/install.sh)"
+```
+
+### Manual; download the script and place it anywhere in your PATH 
+```
+curl https://raw.githubusercontent.com/Danjoe4/gpt-cli/master/gpt -O
 ```
 
 # Motivation
